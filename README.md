@@ -1,17 +1,17 @@
 # cordova-azure-notification-hubs
 
-Register and receive push notifications via Azure Notification Hub.
+Register and receive push notifications with Azure Notification Hubs.
 
 This cordova plugin is based on [phonegap-plugin-push](https://github.com/phonegap/phonegap-plugin-push).
-Chenck the api on https://github.com/phonegap/phonegap-plugin-push
+Check the api on https://github.com/phonegap/phonegap-plugin-push
 
 ## Reference APIs
 
 * iOS: apns
 * Android: fcm
-* [Azure notification hubs sdk](https://github.com/Azure/azure-notificationhubs)
+* [Azure Notification Hubs sdk](https://github.com/Azure/azure-notificationhubs)
   * Android
-  * iOS (針對 Azure notification hub RigistrationId 的取得方式做了一些修改)
+  * iOS (針對 Azure Notification Hubs RigistrationId 的取得方式做了一些修改)
 
 ## Additional Usage
 
