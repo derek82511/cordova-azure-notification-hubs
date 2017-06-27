@@ -10,8 +10,8 @@ Check the api on https://github.com/phonegap/phonegap-plugin-push
 * iOS: apns
 * Android: fcm
 * [Azure Notification Hubs sdk](https://github.com/Azure/azure-notificationhubs)
-  * Android
-  * iOS (針對 Azure Notification Hubs RigistrationId 的取得方式做了一些修改)
+  * Android 
+  * iOS (針對 Azure Notification Hubs RigistrationId 的取得方式做了一些修改)
 
 ## Additional Usage
 
@@ -78,9 +78,9 @@ OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-                                 Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
 
    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
