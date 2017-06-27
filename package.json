@@ -1,17 +1,17 @@
 {
-  "name": "cordova-azure-notification-hub",
-  "description": "Register and receive push notifications via Azure Notification Hub.",
+  "name": "cordova-azure-notification-hubs",
+  "description": "Register and receive push notifications with Azure Notification Hubs.",
   "version": "1.0.0",
-  "homepage": "https://github.com/derek82511/cordova-azure-notification-hub",
+  "homepage": "https://github.com/derek82511/cordova-azure-notification-hubs",
   "repository": {
     "type": "git",
-    "url": "git://github.com/derek82511/cordova-azure-notification-hub.git"
+    "url": "git://github.com/derek82511/cordova-azure-notification-hubs.git"
   },
   "bugs": {
-    "url": "https://github.com/derek82511/cordova-azure-notification-hub/issues"
+    "url": "https://github.com/derek82511/cordova-azure-notification-hubs/issues"
   },
   "cordova": {
-    "id": "cordova-azure-notification-hub",
+    "id": "cordova-azure-notification-hubs",
     "platforms": [
       "ios",
       "android"
