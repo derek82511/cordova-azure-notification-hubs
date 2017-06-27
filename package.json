@@ -1,0 +1,39 @@
+{
+  "name": "cordova-azure-notification-hub",
+  "description": "Register and receive push notifications via Azure Notification Hub.",
+  "version": "1.0.0",
+  "homepage": "https://github.com/derek82511/cordova-azure-notification-hub",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/derek82511/cordova-azure-notification-hub.git"
+  },
+  "bugs": {
+    "url": "https://github.com/derek82511/cordova-azure-notification-hub/issues"
+  },
+  "cordova": {
+    "id": "cordova-azure-notification-hub",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "ecosystem:phonegap",
+    "cordova-ios",
+    "cordova-android",
+    "azure",
+    "azure notification hub"
+  ],
+  "engines": {
+    "cordovaDependencies": {
+      "1.0.0": {
+        "cordova-ios": ">=4.4.0",
+        "cordova-android": ">=6.2.1",
+        "cordova": ">=6.4.0"
+      }
+    }
+  },
+  "author": "Chang, Cheng-Yi",
+  "license": "MIT"
+}
