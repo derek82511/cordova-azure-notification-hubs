@@ -23,7 +23,8 @@
     "cordova-ios",
     "cordova-android",
     "azure",
-    "azure notification hub"
+    "push"
+    "notification"
   ],
   "engines": {
     "cordovaDependencies": {
