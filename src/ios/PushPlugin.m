@@ -300,7 +300,7 @@
         [results setValue:dev.model forKey:@"deviceModel"];
         [results setValue:dev.systemVersion forKey:@"deviceSystemVersion"];
 
-        [self registerWithToken: registrationId];
+        [self registerWithToken:token withAzureRegId:registrationId];
 #endif
     }];
 }
@@ -441,10 +441,12 @@
     }
 }
 
--(void)registerWithToken:(NSString*)token; {
+-(void)registerWithToken:(NSString *)token withAzureRegId:(NSString *)azureRegId
+{
     // Send result to trigger 'registration' event but keep callback
     NSMutableDictionary* message = [NSMutableDictionary dictionaryWithCapacity:1];
     [message setObject:token forKey:@"registrationId"];
+    [message setObject:azureRegId forKey:@"azureRegId"];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:message];
     [pluginResult setKeepCallbackAsBool:YES];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];

@@ -34,6 +34,7 @@ var push = PushNotification.init({
 
 push.on('registration', function (data) {
     console.log(data.registrationId);
+    console.log(data.azureRegId);
     alert(JSON.stringify(data));
 });
 

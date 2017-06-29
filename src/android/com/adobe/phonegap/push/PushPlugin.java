@@ -92,28 +92,30 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         if (!"".equals(token)) {
                             SharedPreferences.Editor editor = sharedPref.edit();
                             
-                            if (((regId=sharedPref.getString(REGISTRATION_ID, null)) == null)){
+                            if (((regId=sharedPref.getString(AZURE_REG_ID, null)) == null)){
                                 NotificationHub hub = new NotificationHub(notificationHubPath, connectionString, getApplicationContext());
 
                                 regId = hub.register(token).getRegistrationId();
 
-                                editor.putString(REGISTRATION_ID, regId);
-                                editor.putString(FCM_TOKEN, token);
+                                editor.putString(AZURE_REG_ID, regId);
+                                editor.putString(REGISTRATION_ID, token);
                                 editor.commit();
-                            } else if ((storedToken=sharedPref.getString(FCM_TOKEN, "")) != token) {
+                            } else if ((storedToken=sharedPref.getString(REGISTRATION_ID, "")) != token) {
                                 NotificationHub hub = new NotificationHub(notificationHubPath, connectionString, getApplicationContext());
 
                                 regId = hub.register(token).getRegistrationId();
 
-                                editor.putString(REGISTRATION_ID, regId);
-                                editor.putString(FCM_TOKEN, token);
+                                editor.putString(AZURE_REG_ID, regId);
+                                editor.putString(REGISTRATION_ID, token);
                                 editor.commit();
                             } else {
                                 callbackContext.error("Empty registration ID received from Azure");
                                 return;
                             }
 
-                            JSONObject json = new JSONObject().put(REGISTRATION_ID, regId);
+                            JSONObject json = new JSONObject();
+                            json.put(AZURE_REG_ID, regId);
+                            json.put(REGISTRATION_ID, token);
 
                             Log.v(LOG_TAG, "onRegistered: " + json.toString());
 
@@ -185,8 +187,8 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         hub.unregister();
 
                         SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.remove(AZURE_REG_ID);
                         editor.remove(REGISTRATION_ID);
-                        editor.remove(FCM_TOKEN);
                         editor.commit();
                         
                         FirebaseInstanceId.getInstance().deleteInstanceId();
