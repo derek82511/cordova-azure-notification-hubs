@@ -680,6 +680,10 @@ public class FCMService extends FirebaseMessagingService implements PushConstant
         String soundname = extras.getString(SOUNDNAME);
         if (soundname == null) {
             soundname = extras.getString(SOUND);
+
+            if (soundname != null && soundname.isEmpty()){
+                return;
+            }
         }
         if (SOUND_RINGTONE.equals(soundname)) {
             mBuilder.setSound(android.provider.Settings.System.DEFAULT_RINGTONE_URI);
