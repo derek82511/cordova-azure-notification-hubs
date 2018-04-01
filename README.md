@@ -9,9 +9,9 @@ Check the api on https://github.com/phonegap/phonegap-plugin-push
 
 * iOS: apns
 * Android: fcm
-* [Azure Notification Hubs sdk](https://github.com/Azure/azure-notificationhubs)
+* [Azure Notification Hubs Official sdk](https://github.com/Azure/azure-notificationhubs)
   * Android 
-  * iOS (針對 Azure Notification Hubs RigistrationId 的取得方式做了一些修改)
+  * iOS
 
 ## Additional Usage
 
