@@ -25,7 +25,7 @@
 
 #import "PushPlugin.h"
 
-#import "SBNotificationHub.h"
+#import <WindowsAzureMessaging/SBNotificationHub.h>
 
 @implementation PushPlugin : CDVPlugin
 
@@ -243,7 +243,7 @@
     SBNotificationHub* hub = [[SBNotificationHub alloc] initWithConnectionString:self.connectionString 
                                                              notificationHubPath:self.notificationHubPath];
 
-    [hub registerNativeWithDeviceToken:deviceToken tags:nil completion:^(NSError* error, NSString* registrationId) {
+    [hub registerNativeWithDeviceToken:deviceToken tags:nil completion:^(NSError* error) {
         if (error != nil) {
             NSLog(@"Failed to call azure notification register, ignoring: %@", error);
             return;
@@ -300,7 +300,19 @@
         [results setValue:dev.model forKey:@"deviceModel"];
         [results setValue:dev.systemVersion forKey:@"deviceSystemVersion"];
 
-        [self registerWithToken:token withAzureRegId:registrationId];
+        SBLocalStorage* storageManager = [[SBLocalStorage alloc] initWithNotificationHubPath:self.notificationHubPath];
+
+        StoredRegistrationEntry* cached = [storageManager getStoredRegistrationEntryWithRegistrationName:[SBRegistration Name]];
+
+        if(cached == nil){
+            NSLog(@"Azure NotificationHub register fail.");
+
+            [self registerWithToken:token withAzureRegId:@""];
+        }else{
+            NSLog(@"Azure NotificationHub register success: %@", cached.RegistrationId);
+
+            [self registerWithToken:token withAzureRegId:cached.RegistrationId];
+        }
 #endif
     }];
 }

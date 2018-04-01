@@ -1,7 +1,7 @@
 {
   "name": "cordova-azure-notification-hubs",
   "description": "Register and receive push notifications with Azure Notification Hubs.",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/derek82511/cordova-azure-notification-hubs",
   "repository": {
     "type": "git",
@@ -30,7 +30,7 @@
     "cordovaDependencies": {
       "1.0.1": {
         "cordova-ios": ">=4.4.0",
-        "cordova-android": ">=6.2.1",
+        "cordova-android": ">=6.1.2",
         "cordova": ">=6.4.0"
       }
     }
