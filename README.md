@@ -13,6 +13,14 @@ To install from the command line:
 cordova plugin add cordova-azure-notification-hubs
 ```
 
+In the platform tag for Android add the following resource-file tag in config.xml if you are using the latest version of this plugin:
+
+```xml
+<platform name="android">
+  <resource-file src="google-services.json" target="app/google-services.json" />
+</platform>
+```
+
 ## Reference APIs
 
 * iOS: apns

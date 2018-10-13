@@ -85,4 +85,12 @@ public interface PushConstants {
     public static final String SUBJECT = "subject";
     public static final String GOOGLE_APP_ID = "google_app_id";
     public static final String GCM_DEFAULT_SENDER_ID = "gcm_defaultSenderId";
+
+    public static final String DEFAULT_CHANNEL_ID = "PushPluginChannel";
+    public static final String CHANNEL_ID = "id";
+    public static final String CHANNEL_DESCRIPTION = "description";
+    public static final String CHANNEL_IMPORTANCE = "importance";
+    public static final String CHANNEL_LIGHT_COLOR = "lightColor";
+    public static final String CHANNEL_VIBRATION = "vibration";
+    public static final String ANDROID_CHANNEL_ID = "android_channel_id";
 }

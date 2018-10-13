@@ -1,10 +1,17 @@
 package com.adobe.phonegap.push;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -52,6 +59,114 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
         return this.cordova.getActivity().getApplicationContext();
     }
 
+    @TargetApi(26)
+    private JSONArray listChannels() throws JSONException {
+        JSONArray channels = new JSONArray();
+        // only call on Android O and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            List<NotificationChannel> notificationChannels = notificationManager.getNotificationChannels();
+            for (NotificationChannel notificationChannel : notificationChannels) {
+                JSONObject channel = new JSONObject();
+                channel.put(CHANNEL_ID, notificationChannel.getId());
+                channel.put(CHANNEL_DESCRIPTION, notificationChannel.getDescription());
+                channels.put(channel);
+            }
+        }
+        return channels;
+    }
+
+    @TargetApi(26)
+    private void deleteChannel(String channelId) {
+        // only call on Android O and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.deleteNotificationChannel(channelId);
+        }
+    }
+
+    @TargetApi(26)
+    private void createChannel(JSONObject channel) throws JSONException {
+        // only call on Android O and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+
+            String packageName = getApplicationContext().getPackageName();
+            NotificationChannel mChannel = new NotificationChannel(channel.getString(CHANNEL_ID),
+                    channel.optString(CHANNEL_DESCRIPTION, ""),
+                    channel.optInt(CHANNEL_IMPORTANCE, NotificationManager.IMPORTANCE_DEFAULT));
+
+            int lightColor = channel.optInt(CHANNEL_LIGHT_COLOR, -1);
+            if (lightColor != -1) {
+                mChannel.setLightColor(lightColor);
+            }
+
+            int visibility = channel.optInt(VISIBILITY, NotificationCompat.VISIBILITY_PUBLIC);
+            mChannel.setLockscreenVisibility(visibility);
+
+            boolean badge = channel.optBoolean(BADGE, true);
+            mChannel.setShowBadge(badge);
+
+            String sound = channel.optString(SOUND, "default");
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE).build();
+            if (SOUND_RINGTONE.equals(sound)) {
+                mChannel.setSound(android.provider.Settings.System.DEFAULT_RINGTONE_URI, audioAttributes);
+            } else if (sound != null && !sound.contentEquals(SOUND_DEFAULT)) {
+                Uri soundUri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://" + packageName + "/raw/" + sound);
+                mChannel.setSound(soundUri, audioAttributes);
+            } else {
+                mChannel.setSound(android.provider.Settings.System.DEFAULT_NOTIFICATION_URI, audioAttributes);
+            }
+
+            // If vibration settings is an array set vibration pattern, else set enable
+            // vibration.
+            JSONArray pattern = channel.optJSONArray(CHANNEL_VIBRATION);
+            if (pattern != null) {
+                int patternLength = pattern.length();
+                long[] patternArray = new long[patternLength];
+                for (int i = 0; i < patternLength; i++) {
+                    patternArray[i] = pattern.optLong(i);
+                }
+                mChannel.setVibrationPattern(patternArray);
+            } else {
+                boolean vibrate = channel.optBoolean(CHANNEL_VIBRATION, true);
+                mChannel.enableVibration(vibrate);
+            }
+
+            notificationManager.createNotificationChannel(mChannel);
+        }
+    }
+
+    @TargetApi(26)
+    private void createDefaultNotificationChannelIfNeeded(JSONObject options) {
+        String id;
+        // only call on Android O and above
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final NotificationManager notificationManager = (NotificationManager) cordova.getActivity()
+                    .getSystemService(Context.NOTIFICATION_SERVICE);
+            List<NotificationChannel> channels = notificationManager.getNotificationChannels();
+
+            for (int i = 0; i < channels.size(); i++) {
+                id = channels.get(i).getId();
+                if (id.equals(DEFAULT_CHANNEL_ID)) {
+                    return;
+                }
+            }
+            try {
+                options.put(CHANNEL_ID, DEFAULT_CHANNEL_ID);
+                options.putOpt(CHANNEL_DESCRIPTION, "PhoneGap PushPlugin");
+                createChannel(options);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, "execute: Got JSON Exception " + e.getMessage());
+            }
+        }
+    }
+
     @Override
     public boolean execute(final String action, final JSONArray data, final CallbackContext callbackContext) {
         Log.v(LOG_TAG, "execute: action=" + action);
@@ -76,6 +191,9 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                         connectionString = data.getJSONObject(0).getString(CONNECTION_STRING);
 
                         jo = data.getJSONObject(0).getJSONObject(ANDROID);
+
+                        // If no NotificationChannels exist create the default one
+                        createDefaultNotificationChannelIfNeeded(jo);
 
                         Log.v(LOG_TAG, "execute: jo=" + jo.toString());
 
