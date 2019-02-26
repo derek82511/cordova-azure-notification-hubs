@@ -13,6 +13,8 @@ To install from the command line:
 cordova plugin add cordova-azure-notification-hubs
 ```
 
+Download your Firebase project's `google-services.json` file to the Cordova project's `platforms/android/` folder.
+
 In the platform tag for Android add the following resource-file tag in config.xml if you are using the latest version of this plugin:
 
 ```xml
