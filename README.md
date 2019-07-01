@@ -9,7 +9,7 @@ Check the api on https://github.com/phonegap/phonegap-plugin-push
 
 To install from the command line:
 
-```
+```shell
 cordova plugin add cordova-azure-notification-hubs
 ```
 
@@ -25,11 +25,11 @@ In the platform tag for Android add the following resource-file tag in config.xm
 
 ## Reference APIs
 
-* iOS: apns
-* Android: fcm
-* [Azure Notification Hubs Official sdk](https://github.com/Azure/azure-notificationhubs)
-  * Android 
-  * iOS
+* Android: [Firebase Cloud Messaging (FCM)](https://firebase.google.com/products/cloud-messaging)
+* Azure Notification Hubs SDK
+  * [Android](https://github.com/Azure/azure-notificationhubs-android)
+  * [iOS](https://github.com/Azure/azure-notificationhubs-ios)
+* iOS: [Apple Push Notification Service (APNS)](https://developer.apple.com/notifications/)
 
 ## Additional Usage
 
@@ -39,7 +39,7 @@ var push = PushNotification.init({
     //設定 Notification Hub 相關參數
     notificationHubPath: 'Your Notification Hub Name',
     connectionString: 'Your Notification Hub Listen Connection String',
-    
+
     android: {
         sound: true
     },
@@ -68,11 +68,12 @@ push.on('notification', function (data) {
 ```
 
 ## References
+
 * Azure Notification Hubs Documentation https://docs.microsoft.com/en-us/azure/notification-hubs/
 * phonegap-plugin-push https://github.com/phonegap/phonegap-plugin-push
-* azure-notificationhubs-sdk https://github.com/Azure/azure-notificationhubs
 
 ## License
+
 MIT License
 
 Copyright 2012-2017 Adobe Systems
